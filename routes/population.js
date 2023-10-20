@@ -46,6 +46,13 @@ const { getAllData, getSingleEntry, putSingleEntry, postSingleEntry} = require('
   // options for PUT single Population Data Entry given City & State
   const putPopulationOptions = {
     schema: {
+      body: {
+        type: 'object',
+        required: ['population'],
+        properties: {
+          population: { type: 'number' }
+        }
+      },
       response: {
         200: objectSchemaPop,
       },
