@@ -1,4 +1,4 @@
-const data = require('../pop-data');
+const { getAllData, getSingleEntry} = require('../controllers/pop-data-controller');
 
 // SCHEMA
   // single data object, returns all properties
@@ -29,7 +29,8 @@ const data = require('../pop-data');
           items: objectSchemaAll
         }
       }
-    }
+    },
+    handler: getAllData
   }
 
   // options for GET single Population Data Entry from City & State req
@@ -39,22 +40,17 @@ const data = require('../pop-data');
         200: objectSchemaPop,
       },
     },
+    handler: getSingleEntry
   }
 
 // ROUTES
   function popDataRoutes(fastify, options, done) {
     // GET
       // ALL DATA
-      fastify.get('/api/population', getAllOptions, (req, res) => {
-        res.send(data)
-      });
+      fastify.get('/api/population', getAllOptions);
       
       // SINGLE POPULATION DATA ENTRY BY CITY & STATE
-      fastify.get('/api/population/state/:state/city/:city', getPopulationOptions, (req, res) => {
-        const { city, state } = req.params;
-        const item = data.find(item => item.city === city && item.state === state);
-        res.send(item);
-      }); 
+      fastify.get('/api/population/state/:state/city/:city', getPopulationOptions); 
 
     // PUT
       // UPDATE POPULATION DATA ENTRY BY CITY & STATE
