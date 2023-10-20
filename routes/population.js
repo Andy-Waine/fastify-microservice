@@ -1,4 +1,4 @@
-const { getAllData, getSingleEntry} = require('../controllers/pop-data-controller');
+const { getAllData, getSingleEntry, putSingleEntry, postSingleEntry} = require('../controllers/pop-data-controller');
 
 // SCHEMA
   // single data object, returns all properties
@@ -43,22 +43,48 @@ const { getAllData, getSingleEntry} = require('../controllers/pop-data-controlle
     handler: getSingleEntry
   }
 
+  // options for PUT single Population Data Entry given City & State
+  const putPopulationOptions = {
+    schema: {
+      response: {
+        200: objectSchemaPop,
+      },
+    },
+    handler: putSingleEntry
+  }
+
+  // options for POST single Population Data Entry given City & State
+  const postPopulationOptions = {
+    schema: {
+      body: {
+        type: 'object',
+        required: ['population'],
+        properties: {
+          population: { type: 'number' }
+        }
+      },
+      response: {
+        201: objectSchemaPop, // 201 = entry created
+      },
+    },
+    handler: postSingleEntry
+  }
+
+
+
 // ROUTES
   function popDataRoutes(fastify, options, done) {
-    // GET
-      // ALL DATA
-      fastify.get('/api/population', getAllOptions);
-      
-      // SINGLE POPULATION DATA ENTRY BY CITY & STATE
-      fastify.get('/api/population/state/:state/city/:city', getPopulationOptions); 
+    // GET ALL DATA
+    fastify.get('/api/population', getAllOptions);
+    
+    // GET SINGLE POPULATION DATA ENTRY BY CITY & STATE
+    fastify.get('/api/population/state/:state/city/:city', getPopulationOptions); 
 
-    // PUT
-      // UPDATE POPULATION DATA ENTRY BY CITY & STATE
-      // TODO: build route  
+    // PUT (UPDATE) POPULATION DATA ENTRY BY CITY & STATE
+    fastify.put('/api/population/state/:state/city/:city', putPopulationOptions); 
 
-    // POST
-      // ADD NEW POPULATION DATA ENTRY
-      // TODO: build route
+    // POST (ADD) NEW DATA ENTRY (BODY: "population": num/uint)
+    fastify.post('/api/population/state/:state/city/:city', postPopulationOptions);
 
     done()
   }

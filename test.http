@@ -3,3 +3,19 @@ GET http://127.0.0.1:5555/api/population HTTP/1.1
 
 ### GET ONE POPULATION DATA ENTRY BY CITY & STATE
 GET http://127.0.0.1:5555/api/population/state/Florida/city/Orlando HTTP/1.1
+
+### PUT (UPDATE) ONE POPULATION DATA ENTRY BY CITY & STATE
+PUT http://127.0.0.1:5555/api/population/state/Florida/city/nowheresville HTTP/1.1
+Content-Type: application/json
+
+{
+ "population": 932
+}
+
+### POST ONE POPULATION DATA ENTRY BY CITY & STATE
+POST http://127.0.0.1:5555/api/population/state/Florida/city/nowheresville HTTP/1.1
+Content-Type: application/json
+
+{
+ "population": 985
+}
