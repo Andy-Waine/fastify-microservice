@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Andy-Waine/node-fastify-population-service#readme",
   "dependencies": {
     "fastify": "^4.24.3",
+    "redis": "^4.6.10",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
