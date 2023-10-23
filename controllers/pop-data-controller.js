@@ -70,7 +70,6 @@
   }
 
 module.exports = {
-  getAllData,
   getSingleEntry,
   putSingleEntry,
   postSingleEntry

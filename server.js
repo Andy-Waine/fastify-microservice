@@ -23,7 +23,7 @@ const connectRedis = async () => {
   setRedisData();
 }
 
-// Define function to handle data upload to Redis
+// Uploads local pop-data.js to Redis (when no persistent data is found in Redis)
 const uploadData = async () => {
   console.log('Uploading data to Redis...')
   
@@ -38,25 +38,35 @@ const uploadData = async () => {
     data.state = data.state.toLowerCase();
 
     let key = `${data.city}` + `-` + `${data.state}`;
-    console.log(key)
     client.set(key, JSON.stringify(data.population));
   }
   console.log('Data uploaded to Redis successfully.');
-
-  // SIMPLETEST: get population of Orlando, FLorida
-  const testPop = await client.get('orlando-florida')
-  console.log("Orlando, Florida population:", testPop)
 }
 
 const setRedisData = async () => {
-   // keyExists <bool>: true if Redis already has popData key, false if not
-  const keyExists = await client.exists('metuchen-borough-new-jersey');
+  // an array of keys to run a datacheck in Redis (cities of various pop size, geographic location, and alphabetical order)
+  var keySet = ['huntsville-alabama', 'otter-creek-florida', 'metuchen-borough-new-jersey', 'new-york-new-york', 'milwaukee-wisconsin', 'lost-springs-wyoming'];
+  var keyExists = false; // default
+  
+  // attempt to get the value assigned to each key from our keySet in Redis
+  for (let key of keySet) {
+    let reply = await client.get(key)
+    if (reply) {
+      console.log('Redis datacheck key found! Key: ' + key);
+      keyExists = true;
+      break;
+    } else {
+      console.log('Redis datacheck key not found for: ' + key);
+    }
+  }
+
   if (!keyExists) {
-    // popData does not exist in Redis, so popData key in Redis is set to local pop-data.js
+    // None of our keys were found in Redis, we assume their values have not been uploaded yet, so we call uploadData()
+    console.log('No Keys found in Redis')
     uploadData()
   } else {
-    // popData already exists in Redis. Function exits, allowing data to persist
-    console.log('popData already exists in Redis');
+    // At least one of our keys was found in Redis,  so we do nothing (finalizing the start() process)
+    console.log('Existing Session w/ Population Data Found in Redis');
   }
 }
 
