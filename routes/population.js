@@ -31,7 +31,8 @@ const { getSingleEntry, putSingleEntry, postSingleEntry} = require('../controlle
         }
       },
       response: {
-        200: objectSchemaPop,
+        201: objectSchemaPop, // 200 = entry updated
+        201: objectSchemaPop, // 201 = entry created
       },
     },
     handler: putSingleEntry

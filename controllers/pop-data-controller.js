@@ -13,46 +13,66 @@
 
     // returns value (population) assigned to key in Redis
     let replyPop = await client.get(key)
-    res.send(replyPop);
+    if (replyPop) {
+      let jsonReplyPop = {"population": replyPop}
+      res.status(200).send(jsonReplyPop);
+    } else {
+      res.status(400).send(`Entry not found, please re-check parameters or use the POST route to create a new entry.`);
+    }
   }
 
   const putSingleEntry = async (req, res) => {
-    let { city, state } = req.params;
-    let { population } = req.body;
-
-    city = formatParams(city);
-    state = formatParams(state);
-
-    // the key in Redis is all lowercase city-state (e.g. 'metuchen-borough-new-jersey')
-    key = `${city}` + `-` + `${state}`
-
-    // returns value (population) assigned to key in Redis
-    let replyPop = await client.get(key)
-
-    if (replyPop) {
-      // update the value (population) assigned to the key in Redis
-      client.set(key, population);
-      res.send({ population });
-    } else {
-      res.status(404).send('Entry not found');
-      // TODO: Update this to instead call postSingleEntry
+    try {
+      let { city, state } = req.params;
+      let { population } = req.body;
+  
+      city = formatParams(city);
+      state = formatParams(state);
+  
+      // the key in Redis is all lowercase city-state (e.g. 'metuchen-borough-new-jersey')
+      key = `${city}` + `-` + `${state}`
+  
+      // returns value (population) assigned to key in Redis
+      let replyPop = await client.get(key)
+  
+      if (replyPop) {
+        // update the value (population) assigned to the key in Redis
+        client.set(key, population);
+        res.send({ population });
+      } else {
+        // no key found, so we add a new key-value entry to Redis
+        client.set(key, population);
+        res.status(201).send({ population });
+      }
+    } catch {
+      res.status(400).send(`Entry could not be updated, please re-check the route and its parameters.`);
     }
   }
 
-  const postSingleEntry = (req, res) => {
-    const { city, state } = req.params;
-    const { population } = req.body;
+  const postSingleEntry = async (req, res) => {
+    try {
+      let { city, state } = req.params;
+      let { population } = req.body;
 
-    const item = data.find(item => item.city === city && item.state === state);
+      city = formatParams(city);
+      state = formatParams(state);
 
-    if (item) {
-      res.status(409).send('Entry already exists, please use PUT to update');
-    } else {
-      data.push({ city, state, population });
-      res.status(201).send({ population });
+      // the key in Redis is all lowercase city-state (e.g. 'metuchen-borough-new-jersey')
+      key = `${city}` + `-` + `${state}`
+
+      // returns value (population) assigned to key in Redis
+      let replyPop = await client.get(key)
+
+      if (replyPop) {
+        res.status(409).send('Entry already exists, please use PUT to update');
+      } else {
+        client.set(key, population);
+        res.status(201).send({ population });
+      } 
+    } catch {
+      res.status(400).send(`Entry could not be created, please re-check the route and its parameters.`);
     }
   }
-
 
 // HELPER FUNCTIONS //
   /* 
