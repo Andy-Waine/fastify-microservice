@@ -1,7 +1,7 @@
 {
   "name": "fastify-population-service",
   "version": "1.0.0",
-  "description": "A sample node.js service that allows the user to GET/PUT city population data using Fastify as the REST framework.",
+  "description": "A sample node.js service that allows the user to GET/PUT city population data. Uses Fastify as the REST framework and Redis for caching/data persistence.",
   "main": "index.js",
   "scripts": {
     "start": "node server",
@@ -20,8 +20,7 @@
   "homepage": "https://github.com/Andy-Waine/node-fastify-population-service#readme",
   "dependencies": {
     "fastify": "^4.24.3",
-    "redis": "^4.6.10",
-    "uuid": "^9.0.1"
+    "redis": "^4.6.10"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
