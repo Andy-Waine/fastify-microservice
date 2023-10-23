@@ -1,6 +1,3 @@
-### GET ALL CITY POPULATION DATA
-GET http://127.0.0.1:5555/api/population HTTP/1.1
-
 ### GET ONE POPULATION DATA ENTRY BY CITY & STATE
 GET http://127.0.0.1:5555/api/population/state/Florida/city/Orlando HTTP/1.1
 

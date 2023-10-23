@@ -27,8 +27,6 @@ const connectRedis = async () => {
 const uploadData = async () => {
   console.log('Uploading data to Redis...')
   
-  // client.set('popData', JSON.stringify(popData));
-  
   // Loop through popData array
   for(const data of popData) {
     // replace any spaces in the city and state with a dash
@@ -51,7 +49,7 @@ const uploadData = async () => {
 }
 
 const setRedisData = async () => {
-   // bool: true if Redis already has popData key, false if not
+   // keyExists <bool>: true if Redis already has popData key, false if not
   const keyExists = await client.exists('metuchen-borough-new-jersey');
   if (!keyExists) {
     // popData does not exist in Redis, so popData key in Redis is set to local pop-data.js

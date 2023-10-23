@@ -2,10 +2,6 @@
   const client = require('../redis');
 
 // CONTROLLERS //
-  const getAllData = (req, res) => {
-    res.send(data)
-  }
-
   const getSingleEntry = async (req, res) => {
     let { city, state } = req.params;
 
@@ -46,7 +42,9 @@
   const postSingleEntry = (req, res) => {
     const { city, state } = req.params;
     const { population } = req.body;
+
     const item = data.find(item => item.city === city && item.state === state);
+
     if (item) {
       res.status(409).send('Entry already exists, please use PUT to update');
     } else {
