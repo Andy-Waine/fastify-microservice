@@ -1,4 +1,4 @@
-const data = require('../pop-data');
+// const data = require('../pop-data');
 
 const getAllData = (req, res) => {
   res.send(data)

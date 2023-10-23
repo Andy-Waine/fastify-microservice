@@ -23,16 +23,43 @@ const connectRedis = async () => {
   setRedisData();
 }
 
+// Define function to handle data upload to Redis
+const uploadData = async () => {
+  console.log('Uploading data to Redis...')
+  
+  // client.set('popData', JSON.stringify(popData));
+  
+  // Loop through popData array
+  for(const data of popData) {
+    // replace any spaces in the city and state with a dash
+    data.city = data.city.replace(/\s/g, '-');
+    data.state = data.state.replace(/\s/g, '-');
+
+    // make all characters in the city and state lowercase
+    data.city = data.city.toLowerCase();
+    data.state = data.state.toLowerCase();
+
+    let key = `${data.city}` + `-` + `${data.state}`;
+    console.log(key)
+    client.set(key, JSON.stringify(data.population));
+  }
+  console.log('Data uploaded to Redis successfully.');
+
+  // SIMPLETEST: get population of Orlando, FLorida
+  const testPop = await client.get('orlando-florida')
+  console.log("Orlando, Florida population:", testPop)
+}
+
 const setRedisData = async () => {
-  const keyExists = await client.exists('popData'); // bool: true if Redis already has popData
+   // bool: true if Redis already has popData key, false if not
+  const keyExists = await client.exists('metuchen-borough-new-jersey');
   if (!keyExists) {
     // popData does not exist in Redis, so popData key in Redis is set to local pop-data.js
-    await client.set('popData', JSON.stringify(popData));
-    console.log('popData saved to Redis');
+    uploadData()
   } else {
     // popData already exists in Redis. Function exits, allowing data to persist
     console.log('popData already exists in Redis');
   }
 }
 
-start()
+start() 
