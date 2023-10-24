@@ -14,7 +14,7 @@
   
 ## 💻 Technologies Used
 
-- [Node](https://nodejs.org/) (v18)
+- [Node v18](https://nodejs.org/) - JS Runtime
 - [Fastify](https://fastify.dev/) - REST Framework
 - [Redis](https://redis.io/) - Caching/Data Persistence
 
@@ -23,7 +23,4 @@
  - Locally building this application requires an active local Redis instance on PORT:6379 (default) [instructions](https://tableplus.com/blog/2018/10/how-to-start-stop-restart-redis.html).
  - Clone this repository and run `npm install` to download all dependencies.
  - Run `npm run start` to serve the application locally (http://127.0.0.1:5555/).
- - Make GET, PUT, and POST requests using the client of your choice (e.g. Postman, REST client, etc.) and the following route: http://127.0.0.1:5555/api/population/state/:state/city/:city
-  
-#### 🧗‍ Project Future 🧗‍
-
+ - Make GET, PUT, and POST requests using the client of your choice (e.g. Postman, REST client, etc.) and the following route (replacing :city and :state with your desired parameters): http://127.0.0.1:5555/api/population/state/:state/city/:city
