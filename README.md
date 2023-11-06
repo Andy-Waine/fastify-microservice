@@ -2,8 +2,6 @@
 
 # Fastify Population Service 🌐
 
-[DEMO VIDEO](https://www.dropbox.com/scl/fi/9tvuax8bqh5olzxklmu8y/population-service-demo.webm?rlkey=1unw0k5om4j1hjrdmev5695u6&dl=0)
-
 ## :file_folder: Table of Contents
 
 -   [General Information](#-general-information)
